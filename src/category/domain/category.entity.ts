@@ -1,6 +1,7 @@
 /***** inicio das definições dos tipos *****/
 
 import { Uuid } from "../../shared/domain/value-objects/uuid.vo";
+import { CategoryValidatorFactory } from "./category.validator";
 
 //define as propriedades necessarias para criar uma instancia de Category.Algumas propriedades sao opcionais(category_id, description, is_active, created_at)
 export type CategoryConstructorProps = {
@@ -38,17 +39,21 @@ export class Category {
 
     //metodo estatico para criar uma nova instancia de Category. Encapsula a logica de criacao, oferecendo um ponto unico para instanciar objetos da entidade
     static create(props: CategoryConstructorProps): Category {
-        return new Category(props);
+        const category = new Category(props);
+        Category.validate(category);
+        return category;
     }
 
     /***** inicio dos metodos para modificar o estado da entidade *****/
     //encapsulando a lógica de negócios
     changeName(name: string): void {
         this.name = name;
+        Category.validate(this);
     }
 
     changeDescription(description: string): void {
         this.description = description;
+        Category.validate(this)
     }
 
     activate() {
@@ -60,6 +65,10 @@ export class Category {
     }
     /***** fim dos metodos para modificar o estado da entidade *****/
 
+    static validate(entity: Category) {
+        const validator = CategoryValidatorFactory.create();
+        return validator.validate(entity);
+    }
 
     //converte a entidade em um objeto literal, facilitando a conversao para JSON
     toJSON() {

@@ -1,5 +1,7 @@
 import { MaxLength, IsString, IsNotEmpty, IsOptional, IsBoolean } from "class-validator";
 import { Category } from "./category.entity";
+import { ClassValidatorFields } from "../../shared/domain/validators/class-validator-fields";
+// import {} from '../../shared/domain/';
 
 export class CategoryRules {
   @MaxLength(255)
@@ -17,5 +19,18 @@ export class CategoryRules {
 
   constructor({ name, description, is_active }: Partial<Category>) {
     Object.assign(this, { name, description, is_active });
+  }
+}
+
+
+class CategoryValidator extends ClassValidatorFields<CategoryRules> {
+  validate(entity: Category) {
+    return super.validate(new CategoryRules(entity));
+  }
+}
+
+export class CategoryValidatorFactory {
+  static create() {
+    return new CategoryValidator();
   }
 }

@@ -1,7 +1,13 @@
+import { before } from "lodash";
 import { Uuid } from "../../../shared/domain/value-objects/uuid.vo";
 import { Category } from "../category.entity"
 
 describe('category unit tests', () => {
+  let validateSpy: any;
+
+  beforeEach(() => {
+    validateSpy = jest.spyOn(Category, "validate");
+  })
   describe('constructor', () => {
     test('should create a category with default values', () => {
       const category = new Category({
@@ -27,7 +33,6 @@ describe('category unit tests', () => {
       expect(category.description).toBe('description movie');
       expect(category.is_active).toBeTruthy();
       expect(category.created_at).toBe(created_at);
-
     })
 
     test("should create a category with name and description", () => {
@@ -53,6 +58,7 @@ describe('category unit tests', () => {
       expect(category.description).toBeNull();
       expect(category.is_active).toBe(true);
       expect(category.created_at).toBeInstanceOf(Date);
+      expect(validateSpy).toHaveBeenCalledTimes(1);
     });
 
     test("sohuld a category with description", () => {
@@ -99,7 +105,7 @@ describe('category unit tests', () => {
   })
 
   test("should change name", () => {
-    const category = new Category({
+    const category = Category.create({
       name: 'movie',
     });
     category.changeName("other name");
