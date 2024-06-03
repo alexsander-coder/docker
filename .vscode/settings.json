@@ -13,7 +13,7 @@
   // workbench
   "workbench.editor.enablePreview": false,
   "workbench.iconTheme": "material-icon-theme",
-  "workbench.colorTheme": "Origamid Next",
+  "workbench.colorTheme": "Omni",
   // terminal
   "terminal.integrated.fontSize": 14,
   "terminal.integrated.profiles.windows": {
